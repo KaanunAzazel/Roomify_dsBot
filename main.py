@@ -8,6 +8,8 @@ from discord.ext import commands, tasks
 
 from src.listeners.on_ready import on_ready_event
 from src.commands.comm_createParty import create_party_command
+from src.commands.comm_setParty import set_party_command
+
 
 
 dotenv.load_dotenv(dotenv.find_dotenv())
@@ -28,6 +30,15 @@ def exec():
     @bot.hybrid_command(name="create-party", description="Create a party to join")
     async def createParty(ctx: discord.Interaction):
         await create_party_command(ctx)
+
+    @bot.hybrid_command(name="setup-party", description="Set everybody that's in the channel as a Party")
+    async def setParty(ctx: discord.Interaction):
+        await set_party_command(ctx)
+
+    @bot.hybrid_command(name="test", description="test description")
+    async def test(ctx: discord.Interaction):
+        await ctx.reply('teste')
+
 
     @tasks.loop(seconds=3)
     async def task_test():

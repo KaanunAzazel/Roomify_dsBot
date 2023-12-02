@@ -26,4 +26,4 @@ async def create_party_command(ctx: discord.Interaction):
         if len(canal_de_voz.voice_states) == 0:
             await canal_de_voz.delete()
             break
-        await asyncio.sleep(2)
+        await asyncio.sleep(10)
