@@ -1,8 +1,12 @@
+import os
+import dotenv
 import discord
 from discord.ext import commands, tasks
 
+dotenv.load_dotenv(dotenv.find_dotenv())
+
 ID_CHANNEL_MSG = 1180187153452503110
-BOT_TOKEN = "MTE4MDE5MzAxNTE1NTkyNTA2Mg.GBDhGD.SLnviOmRfV8sLwEN6flp6lfBUDPgL7TZIZgDUk" 
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 
 def exec():
