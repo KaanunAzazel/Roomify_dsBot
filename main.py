@@ -4,6 +4,12 @@ import dotenv
 import discord
 from discord.ext import commands, tasks
 
+# IMPORT MODULES
+
+from src.listeners.on_ready import on_ready_event
+from src.commands.comm_createParty import create_party_command
+
+
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 ID_CHANNEL_MSG = 1180187153452503110
@@ -17,44 +23,11 @@ def exec():
 
     @bot.event
     async def on_ready():
-        print("Bot iniciado!")
-        await bot.tree.sync()
-        # task_test.start()
+        await on_ready_event(bot)
 
     @bot.hybrid_command(name="create-party", description="Create a party to join")
     async def createParty(ctx: discord.Interaction):
-        guild = ctx.guild
-        nome_canal = f"{ctx.author.display_name}'s group"
-
-        existing_channel = discord.utils.get(guild.voice_channels, name=nome_canal)
-        if existing_channel:
-            await ctx.send(
-                f"Já existe um canal de voz com o nome {nome_canal}. Entre nele"
-            )
-            return
-
-        categoria_desejada = discord.utils.get(
-            guild.categories, name="︶︶︶ Party Zone ︶︶︶"
-        )
-        if not categoria_desejada:
-            await ctx.send(
-                f"A categoria 'NOME_DA_CATEGORIA' não foi encontrada. Certifique-se de que a categoria existe."
-            )
-            return
-
-        await guild.create_voice_channel(nome_canal, category=categoria_desejada)
-        await ctx.send(
-            f"{nome_canal} criado com sucesso! Entrem pra iniciarem sua jornada"
-        )
-
-        await asyncio.sleep(9)
-
-        while True:
-            canal_de_voz = discord.utils.get(guild.voice_channels, name=nome_canal)
-            if len(canal_de_voz.voice_states) == 0:
-                await canal_de_voz.delete()
-                break
-            await asyncio.sleep(2)
+        await create_party_command(ctx)
 
     @tasks.loop(seconds=3)
     async def task_test():
