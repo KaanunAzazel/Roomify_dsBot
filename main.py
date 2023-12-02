@@ -12,36 +12,43 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 def exec():
     intents = discord.Intents.default()
-    intents.message_content = True 
-    bot = commands.Bot(command_prefix='!', intents=intents)
-            
+    intents.message_content = True
+    bot = commands.Bot(command_prefix="!", intents=intents)
 
     @bot.event
     async def on_ready():
-        print('Bot iniciado!')
+        print("Bot iniciado!")
+        await bot.tree.sync()
         # task_test.start()
 
-    @bot.command()
-    async def createParty(ctx, nome:str):
+    @bot.hybrid_command(name="create-party", description="Create a party to join")
+    async def createParty(ctx: discord.Interaction):
         guild = ctx.guild
-        # nome_canal = f"{ctx.author.display_name}'s group"
-        nome_canal = nome
+        nome_canal = f"{ctx.author.display_name}'s group"
 
         existing_channel = discord.utils.get(guild.voice_channels, name=nome_canal)
         if existing_channel:
-            await ctx.send(f"Já existe um canal de voz com o nome {nome_canal}. Entre nele")
+            await ctx.send(
+                f"Já existe um canal de voz com o nome {nome_canal}. Entre nele"
+            )
             return
-        
-        categoria_desejada = discord.utils.get(guild.categories, name="︶︶︶ Party Zone ︶︶︶")
+
+        categoria_desejada = discord.utils.get(
+            guild.categories, name="︶︶︶ Party Zone ︶︶︶"
+        )
         if not categoria_desejada:
-            await ctx.send(f"A categoria 'NOME_DA_CATEGORIA' não foi encontrada. Certifique-se de que a categoria existe.")
+            await ctx.send(
+                f"A categoria 'NOME_DA_CATEGORIA' não foi encontrada. Certifique-se de que a categoria existe."
+            )
             return
-        
+
         await guild.create_voice_channel(nome_canal, category=categoria_desejada)
-        await ctx.send(f"{nome_canal} criado com sucesso! Entrem pra iniciarem sua jornada")
-        
+        await ctx.send(
+            f"{nome_canal} criado com sucesso! Entrem pra iniciarem sua jornada"
+        )
+
         await asyncio.sleep(9)
-        
+
         while True:
             canal_de_voz = discord.utils.get(guild.voice_channels, name=nome_canal)
             if len(canal_de_voz.voice_states) == 0:
@@ -49,16 +56,13 @@ def exec():
                 break
             await asyncio.sleep(2)
 
-        
-
-
     @tasks.loop(seconds=3)
     async def task_test():
         channel = bot.get_channel(ID_CHANNEL_MSG)
-        await channel.send('Bot inicializado')
-    
+        await channel.send("Bot inicializado")
+
     bot.run(BOT_TOKEN)
 
 
-if __name__ == "__main__":   
+if __name__ == "__main__":
     exec()
