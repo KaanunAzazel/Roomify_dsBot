@@ -13,14 +13,20 @@ async def set_party_command(ctx: discord.Interaction):
         await asyncio.sleep(12)        
         await responsebot.delete()
         return
-
-    if ctx.author.display_name not in [member.display_name for member in canal_de_voz.members]:
-        responsebot = await ctx.reply("O criador da party não está na party")
-        await asyncio.sleep(12)
-        await responsebot.delete()
-        return
+    
+    if len(canal_de_voz.members) >= 1:
+        if ctx.author.display_name not in [member.display_name for member in canal_de_voz.members]:
+            responsebot = await ctx.reply("O criador da party não está na party")
+            await asyncio.sleep(12)
+            await responsebot.delete()
+            return
+        else:
+            responsebot = await ctx.reply("Party setada com sucesso")
+            await asyncio.sleep(12)
+            await responsebot.delete()
+            return
     else:
-        responsebot = await ctx.reply("Party setada com sucesso")
+        responsebot = await ctx.reply("Não há ninguém na party")
         await asyncio.sleep(12)
         await responsebot.delete()
         return
