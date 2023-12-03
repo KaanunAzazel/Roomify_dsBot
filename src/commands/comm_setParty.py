@@ -1,6 +1,8 @@
 import asyncio
 import discord
 
+from src.functions._createParty import _createParty
+
 async def set_party_command(ctx: discord.Interaction):
 
 
@@ -21,7 +23,16 @@ async def set_party_command(ctx: discord.Interaction):
             await responsebot.delete()
             return
         else:
+            await _createParty(canal_de_voz.members)
+
             responsebot = await ctx.reply("Party setada com sucesso")
+
+            
+            # Exemplo
+            # [<Member id=410252296220311554 name='kaanun' global_name='Kaanun' bot=False nick=None guild=<Guild id=1180186430266413177 name='RPG Discord [Under develop]' shard_id=0 chunked=False member_count=4>>,
+            # <Member id=565329611114676265 name='robbsuncc' global_name='Robbsun' bot=False nick=None guild=<Guild id=1180186430266413177 name='RPG Discord [Under develop]' shard_id=0 chunked=False member_count=4>>]
+
+
             await asyncio.sleep(12)
             await responsebot.delete()
             return

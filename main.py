@@ -1,5 +1,6 @@
 import asyncio
 import os
+from typing import Literal
 import dotenv
 import discord
 from discord.ext import commands, tasks
@@ -8,6 +9,7 @@ from discord.ext import commands, tasks
 
 from src.listeners.on_ready import on_ready_event
 from src.commands.comm_createParty import create_party_command
+from src.commands.comm_createCharacter import create_Character_command
 from src.commands.comm_setParty import set_party_command
 
 
@@ -34,6 +36,10 @@ def exec():
     @bot.hybrid_command(name="setup-party", description="Set everybody that's in the channel as a Party")
     async def setParty(ctx: discord.Interaction):
         await set_party_command(ctx)
+
+    @bot.hybrid_command(name="create-character", description="Create a character RANDOMLY for you")
+    async def createCharacter(ctx: discord.Interaction, nome: str, classe: Literal['Guerreiro', 'Mago', 'Tanque']):
+        await create_Character_command(ctx, nome, classe)
 
     @bot.hybrid_command(name="test", description="test description")
     async def test(ctx: discord.Interaction):
